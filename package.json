@@ -1,7 +1,7 @@
 {
   "name": "scholar-data-atlas",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "module",
   "description": "ScholarDataAtlas · 论文数据源 & 检索服务对比表 —— 由零依赖单文件版迁移至 React 18 + Vite + TypeScript",
   "scripts": {
