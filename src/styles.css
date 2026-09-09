@@ -145,6 +145,29 @@
   .ms-clear{align-self:flex-start;background:none;border:0;padding:1px 2px;margin:0;
     color:var(--tx3);font:inherit;font-size:11px;cursor:pointer;text-decoration:underline;
     text-underline-offset:2px;border-radius:4px}
+  /* ---------- 筛选项帮助提示（问号图标，悬浮/点击展开）----------
+     定位上下文建在 .hh 上，浮层相对问号居中弹出；
+     桌面 hover / 键盘 focus-within 即显，移动端点按 toggle（.open）。 */
+  .lab-row{display:inline-flex;align-items:center;gap:3px}
+  .hh{position:relative;display:inline-flex;line-height:0}
+  .hh-btn{background:none;border:0;padding:0 1px;margin:0;cursor:help;
+    color:var(--tx3);opacity:.75;line-height:0;border-radius:50%}
+  .hh-btn:hover,.hh.open .hh-btn,.hh:focus-within .hh-btn{opacity:1;color:var(--acc)}
+  .hh-btn:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+  .hh-pop{display:none;position:absolute;z-index:60;top:calc(100% + 7px);left:50%;
+    transform:translateX(-50%);width:min(340px,86vw);
+    background:var(--panel2);color:var(--tx);border:1px solid var(--line-ui);
+    border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.6;
+    box-shadow:0 10px 28px rgba(0,0,0,.45);text-align:left;cursor:default}
+  .hh:hover .hh-pop,.hh.open .hh-pop,.hh:focus-within .hh-pop{display:block}
+  .hh-t{display:block;font-size:12.5px;color:var(--acc);margin-bottom:2px;font-weight:600}
+  .hh-d{display:block;color:var(--tx)}
+  .hh-opts{display:block;margin-top:7px;border-top:1px solid var(--line);padding-top:6px;
+    display:flex;flex-direction:column;gap:6px}
+  .hh-opt{display:block;color:var(--tx2)}
+  .hh-opt b{color:var(--tx);font-weight:600;margin-right:5px}
+  /* 面板弹出后被 .ctrl 同级表格区盖住的风险：保证 .hh 的 z-index 上下文独立 */
+  .fld,.ms-lab{position:relative}
   .ms-clear:hover{color:var(--sub)}
   .ms-clear:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   .fitcell{display:flex;flex-direction:column;align-items:flex-start;gap:3px}

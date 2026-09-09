@@ -1,9 +1,11 @@
 /** 开放网络 / 通用检索（非学术）筛选栏 —— 类型 / 维护状态 / 数据覆盖
- *  与 ServiceFilterBar 同形态，避免引入新交互。 */
+ *  与 ServiceFilterBar 同形态，避免引入新交互。
+ *  每个筛选项带问号帮助（文案见 src/data/filterHelp.ts）。 */
 
 import type { WebsearchFilters } from "../types";
-import { asOptions } from "./SelectField";
+import { WB_HELP, withDesc } from "../data/filterHelp";
 import MultiSelect from "./MultiSelect";
+import HelpHint from "./HelpHint";
 
 interface Props {
   filters: WebsearchFilters;
@@ -20,7 +22,10 @@ export default function WebsearchFilterBar({
   return (
     <div className="ctrl">
       <div className="fld">
-        <label htmlFor="q3">搜索</label>
+        <span className="lab-row">
+          <label htmlFor="q3">搜索</label>
+          <HelpHint label="搜索" desc={WB_HELP.q.desc} />
+        </span>
         <input
           id="q3"
           type="search"
@@ -32,9 +37,9 @@ export default function WebsearchFilterBar({
         />
       </div>
 
-      <MultiSelect id="wT" label="类型" values={filters.wT || []} options={asOptions(tyOptions)} onChange={(v) => onChange({ wT: v })} />
-      <MultiSelect id="wM" label="维护状态" values={filters.wM || []} options={asOptions(mOptions)} onChange={(v) => onChange({ wM: v })} />
-      <MultiSelect id="wSrc" label="数据覆盖" values={filters.wSrc || []} options={asOptions(srcOptions)} onChange={(v) => onChange({ wSrc: v })} />
+      <MultiSelect id="wT" label="类型" values={filters.wT || []} options={withDesc(tyOptions, WB_HELP.wT)} help={WB_HELP.wT} onChange={(v) => onChange({ wT: v })} />
+      <MultiSelect id="wM" label="维护状态" values={filters.wM || []} options={withDesc(mOptions, WB_HELP.wM)} help={WB_HELP.wM} onChange={(v) => onChange({ wM: v })} />
+      <MultiSelect id="wSrc" label="数据覆盖" values={filters.wSrc || []} options={withDesc(srcOptions, WB_HELP.wSrc)} help={WB_HELP.wSrc} onChange={(v) => onChange({ wSrc: v })} />
 
       <div className="expbar">
         <button type="button" className="exp ghost" onClick={onReset}>

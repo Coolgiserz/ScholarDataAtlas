@@ -6,7 +6,13 @@
  *  选项超过 6 个时收进 <details>，避免筛选栏被撑爆（层级有 56 个取值）。
  *
  *  Option.desc 选填：填了则在 chip 上加原生 title 属性，鼠标悬停 / 触屏长按
- *  时显示详细说明（如「DOI 单查专用 endpoint，与 Crossref REST 同级」）。 */
+ *  时显示详细说明（如「DOI 单查专用 endpoint，与 Crossref REST 同级」）。
+ *
+ *  help 选填（2026-09-09）：字段级帮助（问号图标，悬浮/点击展开字段说明 +
+ *  各选项详细说明），文案来自 src/data/filterHelp.ts。 */
+
+import HelpHint from "./HelpHint";
+import type { FieldHelp } from "../data/filterHelp";
 
 interface Option { value: string; label: string; desc?: string }
 
@@ -16,9 +22,10 @@ interface Props {
   values: string[];
   options: Option[];
   onChange: (v: string[]) => void;
+  help?: FieldHelp;
 }
 
-export default function MultiSelect({ id, label, values, options, onChange }: Props) {
+export default function MultiSelect({ id, label, values, options, onChange, help }: Props) {
   const set = new Set(values);
   const toggle = (v: string) =>
     onChange(set.has(v) ? values.filter((x) => x !== v) : values.concat(v));
@@ -49,6 +56,7 @@ export default function MultiSelect({ id, label, values, options, onChange }: Pr
     <div className="fld ms">
       <span className="ms-lab" id={labId}>
         {label}
+        {help ? <HelpHint label={label} desc={help.desc} options={help.options} /> : null}
         {values.length ? <span className="ms-n">{values.length}</span> : null}
       </span>
       {many ? (
