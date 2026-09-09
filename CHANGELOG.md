@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/Coolgiserz/ScholarDataAtlas/compare/scholar-data-atlas-v2.3.0...scholar-data-atlas-v2.4.0) (2026-09-09)
+
+
+### Features
+
+* 产品化文案——网站更名「学术数据源导览」，Tab 去掉「非学术专用」括号 ([8d76410](https://github.com/Coolgiserz/ScholarDataAtlas/commit/8d764103dcc717c29dba55ea819bae719cb40bbb))
+
 ## [2.3.0](https://github.com/Coolgiserz/ScholarDataAtlas/compare/scholar-data-atlas-v2.2.1...scholar-data-atlas-v2.3.0) (2026-09-09)
 
 
