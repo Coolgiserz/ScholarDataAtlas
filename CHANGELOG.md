@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/Coolgiserz/ScholarDataAtlas/compare/scholar-data-atlas-v2.2.1...scholar-data-atlas-v2.3.0) (2026-09-09)
+
+
+### Features
+
+* 全部筛选项增加问号帮助（字段说明+选项白话解释） ([661eb8a](https://github.com/Coolgiserz/ScholarDataAtlas/commit/661eb8af3eca42552af68991cc7c5b2b6cffbcbc))
+
 ## [2.2.1](https://github.com/Coolgiserz/ScholarDataAtlas/compare/scholar-data-atlas-v2.2.0...scholar-data-atlas-v2.2.1) (2026-09-09)
 
 
