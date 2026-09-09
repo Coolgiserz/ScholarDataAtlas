@@ -16,7 +16,6 @@ const rowCount = (table = "table.t-src") => document.querySelectorAll(table + " 
 const selectScenario = (id: string) => {
   fireEvent.change(screen.getByLabelText("场景"), { target: { value: id } });
 };
-const relCheckbox = () => document.getElementById("fRel") as HTMLInputElement | null;
 
 /** T2.1 —— 首屏渲染 */
 describe("T2.1 首屏", () => {

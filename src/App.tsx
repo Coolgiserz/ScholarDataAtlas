@@ -224,7 +224,6 @@ export default function App() {
           <h2 className="sr-only">数据源对比</h2>
           <FilterBar
             filters={srcF}
-            scenario={scenario}
             onChange={(patch) => setSrcF((f) => ({ ...f, ...patch }))}
             onReset={() => {
               setSrcF(EMPTY_SRC);

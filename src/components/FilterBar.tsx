@@ -1,13 +1,12 @@
-/** 数据源筛选栏 —— 场景 + 只看场景相关 + 各维度下拉 + 搜索 */
+/** 数据源筛选栏 —— 场景 + 各维度下拉 + 搜索 */
 
-import type { Scenario, SourceFilters } from "../types";
+import type { SourceFilters } from "../types";
 import { SCENARIOS } from "../data/scenarios";
 import { asOptions } from "./SelectField";
 import MultiSelect from "./MultiSelect";
 
 interface Props {
   filters: SourceFilters;
-  scenario: Scenario;
   onChange: (patch: Partial<SourceFilters>) => void;
   onReset: () => void;
   regionOptions: string[];
@@ -83,7 +82,7 @@ const labeled = (vs: string[], labels: Record<string, { label: string; desc: str
   });
 
 export default function FilterBar({
-  filters, scenario, onChange, onReset,
+  filters, onChange, onReset,
   regionOptions, layerOptions, costOptions, apiOptions, fitOptions, doiOptions, pdfOptions,
 }: Props) {
   return (
