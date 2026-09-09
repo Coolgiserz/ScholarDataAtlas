@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/Coolgiserz/ScholarDataAtlas/compare/scholar-data-atlas-v2.2.0...scholar-data-atlas-v2.2.1) (2026-09-09)
+
+
+### Bug Fixes
+
+* 清理移除场景开关后遗留的未使用变量（TS6133 导致 CI 失败） ([1508ca4](https://github.com/Coolgiserz/ScholarDataAtlas/commit/1508ca4585a04ddb9457d80575c52a83c9eea3cb))
+
 ## [2.2.0](https://github.com/Coolgiserz/ScholarDataAtlas/compare/scholar-data-atlas-v2.1.0...scholar-data-atlas-v2.2.0) (2026-09-09)
 
 
