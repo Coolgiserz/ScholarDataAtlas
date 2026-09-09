@@ -3,7 +3,7 @@
   "private": true,
   "version": "2.3.0",
   "type": "module",
-  "description": "ScholarDataAtlas · 论文数据源 & 检索服务对比表 —— 由零依赖单文件版迁移至 React 18 + Vite + TypeScript",
+  "description": "ScholarDataAtlas · 学术数据源导览 —— 85 个学术数据源 + 73 个检索服务 + 7 个开放网络检索 API",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

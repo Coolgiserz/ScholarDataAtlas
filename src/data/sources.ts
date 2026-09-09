@@ -1,7 +1,7 @@
 import type { Source } from "../types";
 import { SPECIALTY_SOURCES } from "./vertical/specialty";
 
-/** 论文数据源（迁移自单文件版 v1.3.2，73 条；2026-09-09 补录领域垂直学术源 12 条 → 85 条；
+/** 学术数据源（迁移自单文件版 v1.3.2，73 条；2026-09-09 补录领域垂直学术源 12 条 → 85 条；
  *  勿手工编辑，如需订正请改这里并同步 golden 基线） */
 export const SOURCES: Source[] = [
   {"n":"Crossref","u":"https://www.crossref.org","t":"DOI 注册机构 / 索引","r":"全球","l":"L0 标识层","scale":"181.4M 元数据（2026-04）；数据文件 208GB","cost":"免费","api":"免 key","as":"元数据全量 · 覆盖 181.4M DOI（期刊/会议/图书/数据集/标准/资助/同行评议）· 摘要需出版商授权并非全部有 · 无全文 · 免 key 无硬配额","doi":3,"pdf":0,"sb":"全学科 / 全类型","ge":"全球 160+ 国","fit":"High","nt":"DOI 权威注册处，DOI→元数据第一跳；被引链接 19.8 亿；摘要有许可限制，不能当全文摘要源"},

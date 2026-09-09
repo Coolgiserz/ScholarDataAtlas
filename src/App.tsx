@@ -30,7 +30,7 @@ import { SOURCE_COLUMNS, SERVICE_COLUMNS, WEBSEARCH_COLUMNS } from "./columns";
 const TABS = [
   { id: "src", label: "数据源（" + SOURCES.length + "）" },
   { id: "svc", label: "检索服务（" + SERVICES.length + "）" },
-  { id: "wb", label: "开放网络（非学术专用）（" + WEBSEARCHES.length + "）" },
+  { id: "wb", label: "开放网络（" + WEBSEARCHES.length + "）" },
 ];
 
 const EMPTY_SRC: SourceFilters = { scen: "gen" };
@@ -212,7 +212,7 @@ export default function App() {
       <a className="skip" href="#main">
         跳到主内容
       </a>
-      <h1>论文数据源 &amp; 检索服务对比表</h1>
+      <h1>ScholarDataAtlas · 学术数据源导览</h1>
       <div className="sub">
         核查日期 <b>2026-09-08</b> ｜ <b>{SOURCES.length}</b> 个数据源 + <b>{SERVICES.length}</b> 个检索服务 + <b>{WEBSEARCHES.length}</b> 个开放网络检索
       </div>
@@ -267,7 +267,7 @@ export default function App() {
             sortKey={sort1?.k ?? null}
             sortDir={sort1?.d ?? 1}
             onSort={onSort1}
-            caption={`论文数据源对比表：${SOURCES.length} 个数据源，${SOURCE_COLUMNS.length} 列。表头按钮可排序。`}
+            caption={`学术数据源：${SOURCES.length} 个数据源，${SOURCE_COLUMNS.length} 列。表头按钮可排序。`}
             onJump={onJump}
             className="t-src"
             emptyText="没有匹配的数据源，试试放宽筛选条件。"
@@ -322,7 +322,7 @@ export default function App() {
             sortKey={sort2?.k ?? null}
             sortDir={sort2?.d ?? 1}
             onSort={onSort2}
-            caption={`论文检索服务对比表：${SERVICES.length} 个服务，${SERVICE_COLUMNS.length} 列。表头按钮可排序。`}
+            caption={`检索服务：${SERVICES.length} 个服务，${SERVICE_COLUMNS.length} 列。表头按钮可排序。`}
             onJump={onJump}
             className="t-svc"
             emptyText="没有匹配的服务，试试放宽筛选条件。"
@@ -381,7 +381,7 @@ export default function App() {
             sortKey={sort3?.k ?? null}
             sortDir={sort3?.d ?? 1}
             onSort={onSort3}
-            caption={`开放网络检索对比表：${WEBSEARCHES.length} 个 API，${WEBSEARCH_COLUMNS.length} 列。表头按钮可排序。`}
+            caption={`开放网络检索：${WEBSEARCHES.length} 个 API，${WEBSEARCH_COLUMNS.length} 列。表头按钮可排序。`}
             onJump={onJump}
             className="t-wb"
             emptyText="没有匹配的 API，试试放宽筛选条件。"
