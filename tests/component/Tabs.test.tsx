@@ -5,7 +5,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Tabs from "../../src/components/Tabs";
 
 const TABS = [
-  { id: "src", label: "数据源（73）" },
+  { id: "src", label: "数据源（85）" },
   { id: "svc", label: "检索 / 查询服务" },
 ];
 

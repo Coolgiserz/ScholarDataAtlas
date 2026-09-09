@@ -65,8 +65,6 @@ export interface MetaInput {
   wbCount?: number;
   wbTotal?: number;
   allSources: Source[];
-  /** 「只看场景相关」开关状态 */
-  relOnly: boolean;
   /** 注入时间戳；不传则用当前时间。测试必须传固定值以保证导出可复现 */
   now?: Date;
   /** 当前生效的筛选条件（人类可读），写进导出说明便于复现这批次数据 */
@@ -95,9 +93,7 @@ export function metaRows(input: MetaInput): Sheet {
     const hidden = allSources.filter((d) => relLow(d, sc)).length;
     rows.push([
       "场景过滤",
-      input.relOnly
-        ? "已开启「只看场景相关」，隐藏 " + hidden + " 个他领域垂类源（共 " + srcTotal + " 个）"
-        : "已关闭「只看场景相关」，包含全部 " + srcTotal + " 个源",
+      "已隐藏 " + hidden + " 个他领域垂类源（共 " + srcTotal + " 个，选场景即自动过滤）",
     ]);
   }
   rows.push(["场景权重", Object.keys(sc.w).map((k) => k + " " + sc.w[k]).join(" · ") + " （满分 10）"]);

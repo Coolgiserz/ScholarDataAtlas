@@ -1,17 +1,15 @@
 # ScholarDataAtlas
 
-论文数据源 & 检索服务对比表 —— 73 个学术数据源 + 73 个检索 / 查询服务 + 7 个开放网络检索 API。
+论文数据源 & 检索服务对比表 —— 85 个学术数据源 + 73 个检索 / 查询服务 + 7 个开放网络检索 API。
 
 **数据周期**：2026-09-08 核查
 
-[![CI](https://github.com/<owner>/scholar-data-atlas/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/<owner>/scholar-data-atlas/actions/workflows/deploy-pages.yml)
-[![Release](https://github.com/<owner>/scholar-data-atlas/actions/workflows/release-please.yml/badge.svg)](https://github.com/<owner>/scholar-data-atlas/actions/workflows/release-please.yml)
-
-> 💡 首次 push 后，把上面 `<owner>` 替换成你的 GitHub 用户名 / 组织名，badge 就会亮起来。
+[![CI](https://github.com/Coolgiserz/ScholarDataAtlas/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/Coolgiserz/ScholarDataAtlas/actions/workflows/deploy-pages.yml)
+[![Release](https://github.com/Coolgiserz/ScholarDataAtlas/actions/workflows/release-please.yml/badge.svg)](https://github.com/Coolgiserz/ScholarDataAtlas/actions/workflows/release-please.yml)
 
 ## ✨ 特性
 
-- 三个 Tab：数据源（73）/ 检索服务（73）/ 开放网络（非学术，7）
+- 三个 Tab：数据源（85）/ 检索服务（73）/ 开放网络（非学术，7）
 - 多选 chip 筛选（区域 / 层级 / 收费 / API / DOI / PDF / 适配度 / 维护状态 / 数据覆盖 / 机构订阅）
 - 场景加权打分（10 个选型场景，含 7 个学科场景）
 - 导出 Excel（4 sheet）+ CSV，xlsx 字节级可复现
@@ -21,7 +19,7 @@
 
 ## 🚀 在线访问
 
-- GitHub Pages：https://<owner>.github.io/scholar-data-atlas/
+- GitHub Pages：https://weirdgiser.site/ScholarDataAtlas/
 
 ## 💻 本地开发
 

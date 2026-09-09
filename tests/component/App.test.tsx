@@ -20,24 +20,24 @@ const relCheckbox = () => document.getElementById("fRel") as HTMLInputElement | 
 
 /** T2.1 —— 首屏渲染 */
 describe("T2.1 首屏", () => {
-  it("数据源表默认展示 73 行", () => {
+  it("数据源表默认展示 85 行（73 原有 + 12 新能源 2026-09-09 补录）", () => {
     setup();
-    expect(rowCount()).toBe(73);
+    expect(rowCount()).toBe(85);
   });
 
-  it("计数播报为 73 / 73", () => {
+  it("计数播报为 85 / 85", () => {
     setup();
     const cnt = document.querySelector(".cnt")!;
-    expect(cnt.textContent).toContain("73");
+    expect(cnt.textContent).toContain("85");
   });
 });
 
 /** T2.2 —— 场景切换触发过滤 */
 describe("T2.2 场景切换", () => {
-  it("切到「芯片 / 半导体」后只剩 55 行并显示隐藏计数", () => {
+  it("切到「芯片 / 半导体」后只剩 72 行（85 - 13 他领域）并显示隐藏计数", () => {
     setup();
     selectScenario("chip");
-    expect(rowCount()).toBe(60);
+    expect(rowCount()).toBe(72);
     expect(document.querySelector(".hidn")!.textContent).toContain("已隐藏 13");
   });
 
@@ -58,35 +58,33 @@ describe("T2.2 场景切换", () => {
   });
 });
 
-/** T2.3 —— 「只看场景相关」开关 */
-describe("T2.3 只看场景相关", () => {
-  it("默认勾选；取消后恢复 73 行", () => {
+/** T2.3 —— 场景相关性过滤（已移除「只看场景相关」开关：选场景即默认过滤他领域垂类） */
+describe("T2.3 场景相关性隐式过滤", () => {
+  it("选 chip 场景后自动隐藏 13 个他领域垂类源", () => {
     setup();
+    expect(rowCount()).toBe(85);
     selectScenario("chip");
-    expect(relCheckbox()!.checked).toBe(true);
-    expect(rowCount()).toBe(60);
-    fireEvent.click(relCheckbox()!);
-    expect(rowCount()).toBe(73);
+    expect(rowCount()).toBe(72);
+    expect(document.querySelector(".hidn")!.textContent).toContain("已隐藏 13");
   });
-
-  it("取消后隐藏计数消失", () => {
+  it("选通用建库场景下不过滤他领域垂类（无 rel）", () => {
     setup();
-    selectScenario("chip");
-    fireEvent.click(relCheckbox()!);
+    selectScenario("gen");
+    expect(rowCount()).toBe(85);
     expect(document.querySelector(".hidn")!.textContent).toBe("");
   });
 });
 
-/** T2.4 —— 目标型场景不渲染该开关（避免误导） */
-describe("T2.4 开关条件渲染", () => {
-  it("通用建库场景下不渲染「只看场景相关」", () => {
+/** T2.4 —— 旧版开关条件渲染（已删除：开关从产品里彻底移除） */
+describe.skip("T2.4 旧版「只看场景相关」开关（已删除）", () => {
+  it("通用建库场景下不渲染", () => {
     setup();
-    expect(relCheckbox()).toBeNull();
+    expect(screen.queryByLabelText("只看场景相关")).toBeNull();
   });
   it("学科场景下渲染", () => {
     setup();
     selectScenario("bio");
-    expect(relCheckbox()).not.toBeNull();
+    expect(screen.queryByLabelText("只看场景相关")).toBeNull();
   });
 });
 
@@ -99,7 +97,7 @@ describe("T2.7 空状态与重置", () => {
     const resetBtns = screen.getAllByText("重置筛选");
     expect(resetBtns.length).toBeGreaterThan(0);
     fireEvent.click(resetBtns[0]);
-    expect(rowCount()).toBe(73);
+    expect(rowCount()).toBe(85);
   });
 });
 
@@ -110,11 +108,11 @@ describe("T2.9 URL 状态", () => {
     selectScenario("chip");
     expect(window.location.search).toContain("sc=chip");
   });
-  it("关闭开关后 URL 带上 fRel=0", () => {
+  it("fRel 参数已被移除（不再序列化）", () => {
     setup();
     selectScenario("chip");
-    fireEvent.click(relCheckbox()!);
-    expect(window.location.search).toContain("fRel=0");
+    expect(window.location.search).not.toContain("fRel");
+    expect(window.location.search).not.toContain("fRel=0");
   });
 });
 
@@ -132,7 +130,7 @@ describe("T2.8 导出按钮", () => {
   });
   it("按钮与提示都反映当前筛选条数", () => {
     setup();
-    expect(btn().textContent).toContain("73");
+    expect(btn().textContent).toContain("85");
     expect(document.querySelector(".expnote")!.textContent).toContain("未设置筛选");
   });
 });

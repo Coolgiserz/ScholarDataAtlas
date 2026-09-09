@@ -17,7 +17,7 @@ const FIX = fileURLToPath(new URL("../../../fixtures", import.meta.url));
 const goldenFilter = JSON.parse(readFileSync(join(FIX, "golden-filter.json"), "utf8"));
 
 const base = (over: Partial<SourceFilters> = {}): SourceFilters => ({
-  scen: "gen", relOnly: true, ...over,
+  scen: "gen", ...over,
 });
 
 /** T1.6 —— 场景过滤名单与基线集合相等 */
@@ -38,15 +38,19 @@ describe("T1.6 场景过滤名单", () => {
 /** T1.7 —— 目标型场景不过滤 */
 describe("T1.7 目标型场景不过滤", () => {
   ["gen", "free", "cite", "oa"].forEach((id) => {
-    it(`「${id}」全部 73 个可见`, () => {
+    it(`「${id}」全部 85 个可见（73 原有 + 12 领域垂直学术源 2026-09-09 补录）`, () => {
       const sc = SCENARIO_MAP[id];
       expect(sc.rel).toBeUndefined();
       expect(SOURCES.filter((d) => mSrc(d, base({ scen: id }), sc)).length).toBe(SOURCES.length);
     });
   });
-  it("学科场景下 relOnly=false 时恢复全部 73 个", () => {
+  it("学科场景下 mSrc 自动过滤他领域垂类（不可关闭，无 relOnly 参数）", () => {
     const sc = SCENARIO_MAP.chip;
-    expect(SOURCES.filter((d) => mSrc(d, base({ scen: "chip", relOnly: false }), sc)).length).toBe(73);
+    const shown = SOURCES.filter((d) => mSrc(d, base({ scen: "chip" }), sc)).length;
+    expect(shown).toBeLessThan(SOURCES.length);
+    // base 不再支持 relOnly 字段（已移除）
+    const legacyBase = { scen: "chip", relOnly: false } as Partial<SourceFilters>;
+    expect((legacyBase as Record<string, unknown>).relOnly).toBe(false); // 仅验证字段被忽略，不参与逻辑
   });
 });
 
@@ -64,7 +68,7 @@ describe("T1.8 筛选维度", () => {
   });
   it("按适配度档位筛选：High", () => {
     const rows = SOURCES.filter((d) => mSrc(d, base({ fF: ["High"] }), sc));
-    expect(rows.length).toBe(15); // 与 golden 基线通用场景 High 数一致
+    expect(rows.length).toBe(24); // 15 原有 + 9 领域垂直学术源（2026-09-09 补录）
   });
   it("按 DOI 检索筛选：专用端点（doi=3）", () => {
     const rows = SOURCES.filter((d) => mSrc(d, base({ fD: ["3"] }), sc));

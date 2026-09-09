@@ -12,7 +12,7 @@ import { fitOf, relVal, relLow } from "../../src/core/fit";
 const FIX = fileURLToPath(new URL("../../../fixtures", import.meta.url));
 const golden = JSON.parse(readFileSync(join(FIX, "golden-fit.json"), "utf8"));
 
-/** T1.1 —— 适配度黄金对照：73 源 × 10 场景，逐条全等 */
+/** T1.1 —— 适配度黄金对照：85 源（73 原有 + 12 新能源 2026-09-09 补录） × 10 场景，逐条全等 */
 describe("T1.1 适配度 golden 对照", () => {
   it("场景数与源数与基线一致", () => {
     expect(SCENARIOS.length).toBe(Object.keys(golden.fit).length);
@@ -20,7 +20,7 @@ describe("T1.1 适配度 golden 对照", () => {
   });
 
   SCENARIOS.forEach((sc) => {
-    it(`场景「${sc.n}」73 条分值 / 档位 / relVal / relLow 全等`, () => {
+    it(`场景「${sc.n}」85 条分值 / 档位 / relVal / relLow 全等`, () => {
       const base: Array<[string, number, string, number | null, number]> = golden.fit[sc.id];
       expect(base.length).toBe(SOURCES.length);
       const actual = SOURCES.map((d) => {
@@ -112,7 +112,7 @@ describe("实现指纹", () => {
     );
     return h.digest("hex");
   };
-  it("730 条适配度结果稳定且可复现", () => {
+  it("850 条适配度结果稳定且可复现（73 原有 + 12 新能源 2026-09-09 补录）", () => {
     expect(digest()).toBe(digest());
     expect(digest()).toHaveLength(64);
   });

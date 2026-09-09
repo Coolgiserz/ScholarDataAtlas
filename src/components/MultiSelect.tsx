@@ -3,9 +3,12 @@
  *  ② 已选项一眼可见，不需要展开就知道选了什么；
  *  ③ aria-pressed + role=group，键盘与读屏都能用。
  *
- *  选项超过 6 个时收进 <details>，避免筛选栏被撑爆（层级有 56 个取值）。 */
+ *  选项超过 6 个时收进 <details>，避免筛选栏被撑爆（层级有 56 个取值）。
+ *
+ *  Option.desc 选填：填了则在 chip 上加原生 title 属性，鼠标悬停 / 触屏长按
+ *  时显示详细说明（如「DOI 单查专用 endpoint，与 Crossref REST 同级」）。 */
 
-interface Option { value: string; label: string }
+interface Option { value: string; label: string; desc?: string }
 
 interface Props {
   id: string;
@@ -30,6 +33,8 @@ export default function MultiSelect({ id, label, values, options, onChange }: Pr
           type="button"
           className={"chip tog" + (set.has(o.value) ? " on" : "")}
           aria-pressed={set.has(o.value)}
+          aria-label={o.desc ? o.label + "：" + o.desc : undefined}
+          title={o.desc || undefined}
           data-ms={id}
           data-val={o.value}
           onClick={() => toggle(o.value)}

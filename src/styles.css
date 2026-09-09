@@ -184,6 +184,10 @@
     text-align:left;font-weight:400;white-space:nowrap;font-variant-numeric:tabular-nums}
   table.tier thead th{color:var(--tx3);font-size:11px}
   table.tier tbody th{color:var(--tx);font-weight:600}
+  table.tier caption{color:var(--tx2);font-weight:600;padding:0 0 5px;text-align:left;font-size:11.8px}
+  /* DOI/PDF 双栏图例（>760 单列堆叠） */
+  .legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  @media(max-width:760px){.legend-grid{grid-template-columns:1fr}}
 
   .hide{display:none}
   ::-webkit-scrollbar{width:9px;height:9px}

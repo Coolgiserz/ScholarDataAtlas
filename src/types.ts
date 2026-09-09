@@ -1,6 +1,6 @@
 /** 领域模型定义 —— 与单文件版 v1.3.2 字段一一对应 */
 
-/** 数据源（73 条） */
+/** 数据源（85 条 = 73 原有 + 12 领域垂直学术源，2026-09-09 补录） */
 export interface Source {
   /** 名称 */
   n: string;
@@ -111,7 +111,10 @@ export interface FitResult {
 /** 数据源筛选条件 */
 /** 筛选值一律用数组：空数组 / undefined 均表示「不限」。
  *  逐项互斥性分析见 migration/01_测试设计文档.md——只有「场景」是真正互斥的（一次只按一套权重打分）；
- *  区域 / 层级 / 收费 / API / DOI / PDF / 适配度 都是「属于这些取值之一」的语义，可多选。 */
+ *  区域 / 层级 / 收费 / API / DOI / PDF / 适配度 都是「属于这些取值之一」的语义，可多选。
+ *
+ *  设计变更（2026-09-09）：「只看场景相关」开关移除——选场景就默认走相关性过滤，
+ *  隐藏他领域垂类是隐含的语义而非可选选项；保留开关会让人怀疑「选场景真的有用吗」。 */
 export interface SourceFilters {
   q?: string;
   fR?: string[];
@@ -123,8 +126,6 @@ export interface SourceFilters {
   fF?: string[];
   /** 场景 id */
   scen: string;
-  /** 「只看场景相关」开关 */
-  relOnly: boolean;
 }
 
 /** 服务筛选条件 */

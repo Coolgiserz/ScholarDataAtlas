@@ -7,6 +7,7 @@ import { SERVICES } from "./data/services";
 import { WEBSEARCHES } from "./data/websearch";
 import { SCENARIOS, SCENARIO_MAP } from "./data/scenarios";
 import { mSrc, mSvc, mWb } from "./core/filter";
+import { relLow } from "./core/fit";
 import { describeSrcFilters, describeSvcFilters, describeWbFilters } from "./core/describe";
 import { doSort } from "./core/sort";
 import { srcRows, svcRows, wbRows, metaRows } from "./core/rows";
@@ -22,16 +23,17 @@ import WebsearchFilterBar from "./components/WebsearchFilterBar";
 import DataTable from "./components/DataTable";
 import Toast from "./components/Toast";
 import RelLegend from "./components/RelLegend";
+import DoiPdfLegend from "./components/DoiPdfLegend";
 import type { MouseEvent } from "react";
 import { SOURCE_COLUMNS, SERVICE_COLUMNS, WEBSEARCH_COLUMNS } from "./columns";
 
 const TABS = [
   { id: "src", label: "数据源（" + SOURCES.length + "）" },
   { id: "svc", label: "检索服务（" + SERVICES.length + "）" },
-  { id: "wb", label: "开放网络（非学术）（" + WEBSEARCHES.length + "）" },
+  { id: "wb", label: "开放网络（非学术专用）（" + WEBSEARCHES.length + "）" },
 ];
 
-const EMPTY_SRC: SourceFilters = { scen: "gen", relOnly: true };
+const EMPTY_SRC: SourceFilters = { scen: "gen" };
 const EMPTY_SVC: ServiceFilters = {};
 const EMPTY_WB: WebsearchFilters = {};
 
@@ -48,8 +50,7 @@ export default function App() {
   const [toast, setToast] = useState<{ msg: string; kind: "ok" | "err" } | null>(null);
   const [busy, setBusy] = useState(false);
 
-  /* 关联 chip 的跨表跳转：切到目标表并按名称筛选。
-     跳数据源时强制关掉「只看场景相关」，否则被判为他领域垂类的源会跳过去却看不见。 */
+  /* 关联 chip 的跨表跳转：切到目标表并按名称筛选。 */
   const onJump = useCallback((e: MouseEvent<HTMLTableElement>) => {
     const el = (e.target as HTMLElement).closest("[data-jump]") as HTMLElement | null;
     if (!el) return;
@@ -59,7 +60,7 @@ export default function App() {
       setSvcF({ ...EMPTY_SVC, q: name });
     } else {
       setTab("src");
-      setSrcF({ ...EMPTY_SRC, relOnly: false, q: name });
+      setSrcF({ ...EMPTY_SRC, q: name });
     }
   }, []);
 
@@ -69,7 +70,7 @@ export default function App() {
   useEffect(() => {
     const s = parseUrl(window.location.search);
     if (s.tab) setTab(s.tab);
-    setSrcF((f) => ({ ...f, ...s.src, scen: s.scen || f.scen, relOnly: s.relOnly ?? f.relOnly }));
+    setSrcF((f) => ({ ...f, ...s.src, scen: s.scen || f.scen }));
     setSvcF((f) => ({ ...f, ...s.svc }));
     setWbF((f) => ({ ...f, ...s.wb }));
     if (s.sort1) setSort1(s.sort1);
@@ -81,7 +82,7 @@ export default function App() {
   /* 同步 URL */
   useEffect(() => {
     const qs = serializeUrl({
-      tab, scen: srcF.scen, relOnly: srcF.relOnly, src: srcF, svc: svcF, wb: wbF,
+      tab, scen: srcF.scen, src: srcF, svc: svcF, wb: wbF,
       sort1: sort1 || undefined, sort2: sort2 || undefined, sort3: sort3 || undefined,
     });
     try {
@@ -107,8 +108,8 @@ export default function App() {
   }, [wbF, scenario, sort3]);
 
   const hiddenCount = useMemo(
-    () => (scenario.rel && srcF.relOnly ? SOURCES.filter((d) => mSrc(d, { ...srcF, relOnly: false }, scenario) && !mSrc(d, srcF, scenario)).length : 0),
-    [scenario, srcF],
+    () => (scenario.rel ? SOURCES.filter((d) => relLow(d, scenario)).length : 0),
+    [scenario],
   );
 
   const onSort1 = useCallback((k: string) => setSort1((c) => (c && c.k === k ? { k, d: -c.d } : { k, d: 1 })), []);
@@ -146,7 +147,6 @@ export default function App() {
                   wbCount: wbRowsFiltered.length,
                   wbTotal: WEBSEARCHES.length,
                   allSources: SOURCES,
-                  relOnly: srcF.relOnly,
                   filterDesc: [
                     ...describeSrcFilters(srcF).map((s) => "数据源页 — " + s),
                     ...describeSvcFilters(svcF).map((s) => "服务页 — " + s),
@@ -165,7 +165,7 @@ export default function App() {
         }, 0),
       );
     },
-    [srcRowsFiltered, svcRowsFiltered, wbRowsFiltered, scenario, srcF.relOnly],
+    [srcRowsFiltered, svcRowsFiltered, wbRowsFiltered, scenario],
   );
 
   const srcDesc = useMemo(() => describeSrcFilters(srcF), [srcF]);
@@ -233,6 +233,7 @@ export default function App() {
             {...opts}
           />
           <RelLegend scenario={scenario} />
+          <DoiPdfLegend />
           <div className="cnt" role="status" aria-live="polite">
             显示 <b>{srcRowsFiltered.length}</b> / <span>{SOURCES.length}</span>
             <span className="hidn">{hiddenCount ? "（已隐藏 " + hiddenCount + " 个不相关源）" : ""}</span>

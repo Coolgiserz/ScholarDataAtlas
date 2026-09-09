@@ -7,7 +7,6 @@ import type { ServiceFilters, SourceFilters, WebsearchFilters } from "../types";
 export interface UrlState {
   tab?: string;
   scen?: string;
-  relOnly?: boolean;
   src?: Partial<SourceFilters>;
   svc?: Partial<ServiceFilters>;
   wb?: Partial<WebsearchFilters>;
@@ -32,7 +31,6 @@ export function serializeUrl(s: UrlState): string {
   const p = new URLSearchParams();
   if (s.tab && s.tab !== "src") p.set("tab", s.tab);
   if (s.scen && s.scen !== "gen") p.set("sc", s.scen);
-  if (s.relOnly === false) p.set("fRel", "0");
   if (s.src?.q) p.set("q", s.src.q);
   SRC_KEYS.forEach((k) => {
     const v = join(s.src?.[k]);
@@ -59,7 +57,6 @@ export function parseUrl(search: string): UrlState {
   const out: UrlState = {};
   const tab = p.get("tab"); if (tab) out.tab = tab;
   const sc = p.get("sc"); if (sc) out.scen = sc;
-  if (p.get("fRel") === "0") out.relOnly = false;
 
   const src: Partial<SourceFilters> = {};
   if (p.get("q") != null) src.q = p.get("q")!;

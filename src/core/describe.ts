@@ -12,7 +12,6 @@ export function describeSrcFilters(f: SourceFilters): string[] {
   const out: string[] = [];
   const sc = SCENARIO_MAP[f.scen];
   if (sc && f.scen !== "gen") out.push("场景：" + sc.n);
-  if (sc?.rel) out.push(f.relOnly ? "只看场景相关：开" : "只看场景相关：关");
   if (f.q && f.q.trim()) out.push("搜索：" + f.q.trim());
   const r = j(f.fR); if (r) out.push("区域：" + r);
   const l = j(f.fL); if (l) out.push("层级：" + l);

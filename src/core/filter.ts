@@ -1,4 +1,4 @@
-/** 筛选 —— 纯函数。与单文件版口径一致：场景既影响适配度，也（在 relOnly 时）过滤行。
+/** 筛选 —— 纯函数。场景既影响适配度，也在他领域垂类时过滤行（隐含语义，不可关闭）。
  *
  *  所有取值型筛选都是数组语义：多选命中任一即通过（OR），空数组表示不限。
  *  例外是「场景」——它是互斥的，一次只有一套打分权重，故不在这里参与匹配。 */
@@ -27,10 +27,10 @@ export function mSrcBase(d: Source, f: SourceFilters, sc: Scenario): boolean {
   return true;
 }
 
-/** 数据源筛选（含场景过滤） */
+/** 数据源筛选（含场景过滤：选了学科场景就自动隐藏他领域垂类，不可关闭） */
 export function mSrc(d: Source, f: SourceFilters, sc: Scenario): boolean {
   if (!mSrcBase(d, f, sc)) return false;
-  if (sc.rel && f.relOnly && relLow(d, sc)) return false;
+  if (sc.rel && relLow(d, sc)) return false;
   return true;
 }
 

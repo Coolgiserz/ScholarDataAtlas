@@ -109,9 +109,9 @@ describe("T2.11 列内容对位", () => {
 
 /** T2.1 / T2.12 —— 渲染与语义 */
 describe("T2.1 渲染与语义", () => {
-  it("渲染全部 73 行", () => {
+  it("渲染全部 85 行（73 原有 + 12 新能源 2026-09-09 补录）", () => {
     const { container } = setup();
-    expect(container.querySelectorAll("tbody tr").length).toBe(73);
+    expect(container.querySelectorAll("tbody tr").length).toBe(85);
   });
 
   it("行首为 th scope=row，表头为 th scope=col", () => {

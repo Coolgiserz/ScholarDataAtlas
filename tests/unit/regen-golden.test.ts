@@ -38,7 +38,6 @@ const sheets = () => {
       wbCount: WEBSEARCHES.length,
       wbTotal: WEBSEARCHES.length,
       allSources: SOURCES,
-      relOnly: true,
       now: FIXED_NOW,
     }),
   ];

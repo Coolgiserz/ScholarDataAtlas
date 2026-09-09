@@ -176,3 +176,104 @@ describe("T1.23 光电场景：化学属上游学科", () => {
     }
   });
 });
+
+/** T1.24 补录的领域垂直学术源（2026-09-09 补录 12 条）：必须正确命中对应场景 */
+describe("T1.24 领域垂直学术源（2026-09-09 补录）", () => {
+  it("I1 新能源 4 条在 nev 场景下命中 hi1 关键词 → 1.0 强相关", () => {
+    const nev = SCENARIO_MAP.nev;
+    for (const n of [
+      "ECS（电化学学会）",
+      "IOPscience（英国物理学会）",
+      "储能科学与技术",
+      "电源技术",
+    ]) {
+      expect(relVal(SRC[n], nev), n).toBe(1);
+    }
+  });
+
+  it("I2 光电 4 条在 opt 场景下命中 hi1 关键词 → 1.0 强相关", () => {
+    const opt = SCENARIO_MAP.opt;
+    for (const n of [
+      "SPIE Digital Library",
+      "OSA / Optica Publishing Group",
+      "Photonics Research",
+      "光学学报",
+    ]) {
+      expect(relVal(SRC[n], opt), n).toBe(1);
+    }
+  });
+
+  it("I3 芯片 3 条在 chip 场景下命中 hi1 关键词 → 1.0 强相关（半导体学报 / 微电子学 / 微纳电子技术）", () => {
+    const chip = SCENARIO_MAP.chip;
+    for (const n of [
+      "半导体学报（J. Semiconductors）",
+      "微电子学",
+      "微纳电子技术",
+    ]) {
+      expect(relVal(SRC[n], chip), n).toBe(1);
+    }
+  });
+
+  it("I4 IET 含电气 / 电子 / 工程（chip hi2 关键词）→ 0.75 上游学科", () => {
+    const chip = SCENARIO_MAP.chip;
+    const h = relCalc(SRC["IET Digital Library（英国工程技术学会）"], chip)!;
+    expect(h.v).toBe(0.75);
+    expect(h.label).toBe("上游 / 邻近学科");
+  });
+
+  it("I5 SPIE sb 包含光学 / 光子 / 激光 / 光电子 / 光纤 / 红外 / 光谱 / 成像（8 个 opt hi1 关键词）", () => {
+    const opt = SCENARIO_MAP.opt;
+    const h = relCalc(SRC["SPIE Digital Library"], opt)!;
+    expect(h.v).toBe(1);
+    expect(h.kw.length).toBeGreaterThanOrEqual(4);
+    // SPIE 至少要命中「光学」「光子」「激光」「光电子」之一
+    const expected = ["光学", "光子", "激光", "光电子"];
+    expect(h.kw.some((k) => expected.includes(k)), `SPIE hi1 命中: ${h.kw.join("|")}`).toBe(true);
+  });
+
+  it("I6 新增 12 条在他领域场景的分类（部分跨领域匹配符合预期）", () => {
+    const opt = SCENARIO_MAP.opt;
+    const nev = SCENARIO_MAP.nev;
+    // IOPscience sb 含「半导体」（Semiconductor Sci. Technol.），在 chip 应为强相关；
+    // 同时 sb 含「能源」（J. Phys. Energy），在 nev 也应为强相关；
+    // sb 含「物理」（opt hi2），在 opt 应为上游 0.75。
+    // 这是正确的学术出版社跨领域分类，不是「误升」。
+    expect(relVal(SRC["IOPscience（英国物理学会）"], SCENARIO_MAP.chip)).toBe(1);
+    expect(relVal(SRC["IOPscience（英国物理学会）"], opt)).toBe(0.75);
+    expect(relVal(SRC["IOPscience（英国物理学会）"], nev)).toBe(1);
+
+    // ECS sb 含「电化学」（chip hi2 「化学」），在 chip 应为上游 0.75，不是兜底
+    expect(relVal(SRC["ECS（电化学学会）"], SCENARIO_MAP.chip)).toBe(0.75);
+
+    // 芯片 4 条在 opt/nev 应为兜底（无相关词）
+    for (const n of ["半导体学报（J. Semiconductors）", "微电子学", "微纳电子技术", "IET Digital Library（英国工程技术学会）"]) {
+      expect(relVal(SRC[n], opt), `${n} @ opt`).toBeLessThan(1);
+      expect(relVal(SRC[n], nev), `${n} @ nev`).toBeLessThan(1);
+    }
+    // 光电 4 条在 nev 应为兜底
+    for (const n of ["SPIE Digital Library", "OSA / Optica Publishing Group", "Photonics Research", "光学学报"]) {
+      expect(relVal(SRC[n], nev), `${n} @ nev`).toBeLessThan(1);
+    }
+    // 新能源 4 条（除 IOPscience 外）在 chip/opt 应为非强相关
+    for (const n of ["ECS（电化学学会）", "储能科学与技术", "电源技术"]) {
+      expect(relVal(SRC[n], SCENARIO_MAP.chip), `${n} @ chip`).toBeLessThan(1);
+      expect(relVal(SRC[n], opt), `${n} @ opt`).toBeLessThan(1);
+    }
+    // 光电 4 条在 chip 应为兜底
+    for (const n of ["SPIE Digital Library", "OSA / Optica Publishing Group", "Photonics Research", "光学学报"]) {
+      expect(relVal(SRC[n], SCENARIO_MAP.chip), `${n} @ chip`).toBeLessThan(1);
+    }
+  });
+
+  it("I7 新增 12 条在中文场景应走地域硬约束（中文 4 条命中 1.0，国际 8 条为 0.45 综合档）", () => {
+    const cn = SCENARIO_MAP.cn;
+    for (const n of ["储能科学与技术", "电源技术", "光学学报", "半导体学报（J. Semiconductors）", "微电子学", "微纳电子技术"]) {
+      expect(relVal(SRC[n], cn), `${n} @ cn`).toBe(1);
+    }
+    // 国际 8 条（不是中国本土）：ECS / IOPscience / SPIE / Optica / Photonics Research / IET / 学术 1 等
+    for (const n of ["ECS（电化学学会）", "IOPscience（英国物理学会）", "SPIE Digital Library", "OSA / Optica Publishing Group", "Photonics Research"]) {
+      // 它们 ge 写「全球」，cn 场景下不应升到他领域 0.1，应保留 0.45 综合档
+      expect(relVal(SRC[n], cn), `${n} @ cn`).toBe(0.45);
+    }
+  });
+});

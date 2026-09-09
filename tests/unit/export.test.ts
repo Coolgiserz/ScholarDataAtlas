@@ -31,7 +31,7 @@ const sheets = () => {
       sc, srcCount: SOURCES.length, srcTotal: SOURCES.length,
       svcCount: SERVICES.length, svcTotal: SERVICES.length,
       wbCount: WEBSEARCHES.length, wbTotal: WEBSEARCHES.length,
-      allSources: SOURCES, relOnly: true, now: FIXED_NOW,
+      allSources: SOURCES, now: FIXED_NOW,
     }),
   ];
 };
@@ -80,9 +80,9 @@ describe("T1.14 CSV", () => {
 
 /** T1.15 —— 导出与视图一致 */
 describe("T1.15 导出行数与可见行一致", () => {
-  it("数据源表 = 73 数据行 + 1 表头", () => {
+  it("数据源表 = 85 数据行 + 1 表头（73 原有 + 12 领域垂直学术源 2026-09-09 补录）", () => {
     const sh = srcRows(SOURCES, SCENARIO_MAP.gen);
-    expect(sh.rows.length).toBe(74);
+    expect(sh.rows.length).toBe(86);
     expect(sh.rows[0].length).toBe(17);
   });
   it("服务表 = 72 数据行 + 1 表头（已从 SERVICES 移除 Perplexity API）", () => {
